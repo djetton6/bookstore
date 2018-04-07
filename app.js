@@ -2,8 +2,17 @@ var express = require('express');
 var logger = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var dotenv = require('dotenv');
 let Book = require('./models/book');
-mongoose.connect('mongodb://localhost/test');
+
+dotenv.config();
+global.Promise = mongoose.Promise;
+
+var mongoUrl = process.env.NODE_ENV !== 'production'
+    ? process.env.MONGODB_URL
+    : process.env.MLAB_URL
+
+mongoose.connect(mongoUrl);
 
 var books = require('./routes/books');
 
