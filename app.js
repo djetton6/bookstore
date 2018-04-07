@@ -8,7 +8,9 @@ let Book = require('./models/book');
 dotenv.config();
 global.Promise = mongoose.Promise;
 
-var mongoUrl = process.env.NODE_ENV !== 'production'
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+const mongoUrl = NODE_ENV === 'development'
     ? process.env.MONGODB_URL
     : process.env.MLAB_URL
 
@@ -85,7 +87,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = NODE_ENV === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
